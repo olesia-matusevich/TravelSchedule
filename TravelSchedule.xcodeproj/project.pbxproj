@@ -6,14 +6,40 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F809DE8F2E2F94520060DA0D /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = F809DE8E2E2F94520060DA0D /* OpenAPIRuntime */; };
+		F809DE922E2F94780060DA0D /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = F809DE912E2F94780060DA0D /* OpenAPIURLSession */; };
+		F809DF282E2F97CE0060DA0D /* NearestStationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF272E2F97CE0060DA0D /* NearestStationsService.swift */; };
+		F809DF312E2FAC8A0060DA0D /* CarrierService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF302E2FAC8A0060DA0D /* CarrierService.swift */; };
+		F809DF332E2FACD00060DA0D /* NearestSettlementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF322E2FACD00060DA0D /* NearestSettlementService.swift */; };
+		F809DF352E2FACF50060DA0D /* CopyrightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF342E2FACF50060DA0D /* CopyrightService.swift */; };
+		F809DF372E2FAD1B0060DA0D /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF362E2FAD1B0060DA0D /* ScheduleService.swift */; };
+		F809DF392E2FAD3E0060DA0D /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF382E2FAD3E0060DA0D /* SearchService.swift */; };
+		F809DF3B2E2FAD5A0060DA0D /* StationsListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF3A2E2FAD5A0060DA0D /* StationsListService.swift */; };
+		F809DF3D2E2FAD740060DA0D /* ThreadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF3C2E2FAD740060DA0D /* ThreadService.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F809DE772E2E3AC00060DA0D /* TravelSchedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSchedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F809DF272E2F97CE0060DA0D /* NearestStationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearestStationsService.swift; sourceTree = "<group>"; };
+		F809DF302E2FAC8A0060DA0D /* CarrierService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarrierService.swift; sourceTree = "<group>"; };
+		F809DF322E2FACD00060DA0D /* NearestSettlementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearestSettlementService.swift; sourceTree = "<group>"; };
+		F809DF342E2FACF50060DA0D /* CopyrightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyrightService.swift; sourceTree = "<group>"; };
+		F809DF362E2FAD1B0060DA0D /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
+		F809DF382E2FAD3E0060DA0D /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		F809DF3A2E2FAD5A0060DA0D /* StationsListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationsListService.swift; sourceTree = "<group>"; };
+		F809DF3C2E2FAD740060DA0D /* ThreadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F809DE792E2E3AC00060DA0D /* TravelSchedule */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TravelSchedule;
+			sourceTree = "<group>";
+		};
+		F809DE9A2E2F95AB0060DA0D /* Yaml */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Yaml;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F809DE922E2F94780060DA0D /* OpenAPIURLSession in Frameworks */,
+				F809DE8F2E2F94520060DA0D /* OpenAPIRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,6 +60,8 @@
 		F809DE6E2E2E3AC00060DA0D = {
 			isa = PBXGroup;
 			children = (
+				F809DF262E2F97B90060DA0D /* Services */,
+				F809DE9A2E2F95AB0060DA0D /* Yaml */,
 				F809DE792E2E3AC00060DA0D /* TravelSchedule */,
 				F809DE782E2E3AC00060DA0D /* Products */,
 			);
@@ -43,6 +73,21 @@
 				F809DE772E2E3AC00060DA0D /* TravelSchedule.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F809DF262E2F97B90060DA0D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F809DF272E2F97CE0060DA0D /* NearestStationsService.swift */,
+				F809DF302E2FAC8A0060DA0D /* CarrierService.swift */,
+				F809DF322E2FACD00060DA0D /* NearestSettlementService.swift */,
+				F809DF342E2FACF50060DA0D /* CopyrightService.swift */,
+				F809DF362E2FAD1B0060DA0D /* ScheduleService.swift */,
+				F809DF382E2FAD3E0060DA0D /* SearchService.swift */,
+				F809DF3A2E2FAD5A0060DA0D /* StationsListService.swift */,
+				F809DF3C2E2FAD740060DA0D /* ThreadService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,12 +104,16 @@
 			buildRules = (
 			);
 			dependencies = (
+				F809DE992E2F95340060DA0D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				F809DE792E2E3AC00060DA0D /* TravelSchedule */,
+				F809DE9A2E2F95AB0060DA0D /* Yaml */,
 			);
 			name = TravelSchedule;
 			packageProductDependencies = (
+				F809DE8E2E2F94520060DA0D /* OpenAPIRuntime */,
+				F809DE912E2F94780060DA0D /* OpenAPIURLSession */,
 			);
 			productName = TravelSchedule;
 			productReference = F809DE772E2E3AC00060DA0D /* TravelSchedule.app */;
@@ -94,6 +143,11 @@
 			);
 			mainGroup = F809DE6E2E2E3AC00060DA0D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F809DE8D2E2F94520060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
+				F809DE902E2F94780060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
+				F809DE932E2F95090060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F809DE782E2E3AC00060DA0D /* Products */;
 			projectDirPath = "";
@@ -119,10 +173,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F809DF312E2FAC8A0060DA0D /* CarrierService.swift in Sources */,
+				F809DF332E2FACD00060DA0D /* NearestSettlementService.swift in Sources */,
+				F809DF282E2F97CE0060DA0D /* NearestStationsService.swift in Sources */,
+				F809DF3B2E2FAD5A0060DA0D /* StationsListService.swift in Sources */,
+				F809DF372E2FAD1B0060DA0D /* ScheduleService.swift in Sources */,
+				F809DF392E2FAD3E0060DA0D /* SearchService.swift in Sources */,
+				F809DF352E2FACF50060DA0D /* CopyrightService.swift in Sources */,
+				F809DF3D2E2FAD740060DA0D /* ThreadService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F809DE992E2F95340060DA0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = F809DE982E2F95340060DA0D /* OpenAPIGenerator */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F809DE832E2E3AC10060DA0D /* Debug */ = {
@@ -334,6 +403,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F809DE8D2E2F94520060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-runtime/";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		F809DE902E2F94780060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-urlsession";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		F809DE932E2F95090060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-generator";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F809DE8E2E2F94520060DA0D /* OpenAPIRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F809DE8D2E2F94520060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */;
+			productName = OpenAPIRuntime;
+		};
+		F809DE912E2F94780060DA0D /* OpenAPIURLSession */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F809DE902E2F94780060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */;
+			productName = OpenAPIURLSession;
+		};
+		F809DE982E2F95340060DA0D /* OpenAPIGenerator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F809DE932E2F95090060DA0D /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
+			productName = "plugin:OpenAPIGenerator";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F809DE6F2E2E3AC00060DA0D /* Project object */;
 }
