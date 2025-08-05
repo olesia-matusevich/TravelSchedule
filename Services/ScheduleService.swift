@@ -1,10 +1,3 @@
-//
-//  ScheduleService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
-
 import OpenAPIRuntime
 import Foundation
 import OpenAPIURLSession
@@ -26,10 +19,6 @@ final class ScheduleService: ScheduleServiceProtocol {
     
     func getSchedule(station: String) async throws -> ScheduleResponse {
         let response = try await client.getStationSchedule(query: .init(apikey: apiKey, station: station))
-        
-        print("TEST ScheduleService:")
-        print("\(try response.ok.hashValue)")
-        
         let decoder = JSONDecoder()
         
         decoder.dateDecodingStrategy = .custom { decoder in

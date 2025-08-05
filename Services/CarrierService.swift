@@ -1,9 +1,3 @@
-//
-//  CarrierService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -26,10 +20,6 @@ final class CarrierService: CarrierServiceProtocol {
     
     func getCarrierInfo(code: String) async throws -> CarrierResponse {
         let response = try await client.getCarrierInfo(query: .init(apikey: apiKey, code: code))
-        
-        print("TEST CarrierService:")
-        print(try response.ok.hashValue)
-        
         return try response.ok.body.json
     }
     

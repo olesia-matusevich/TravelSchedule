@@ -22,7 +22,7 @@ struct ErrorView: View {
     
     var body: some View {
         ZStack {
-            Color.whiteUniversal
+            Color.customWhite
                 .ignoresSafeArea()
             VStack(spacing: 16) {
                 errorType.image

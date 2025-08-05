@@ -2,16 +2,16 @@ import SwiftUI
 import OpenAPIURLSession
 
 struct StationSearchView: View {
-   
+    
     @EnvironmentObject private var viewModel: StationsViewModel
     @EnvironmentObject private var navigationManager: NavigationManager
-
+    
     @Binding var selectedFromStation: Components.Schemas.Station?
     @Binding var selectedToStation: Components.Schemas.Station?
     
     let selectedSettlement: Components.Schemas.Settlement
     let isSelectingFrom: Bool
-  
+    
     @State private var searchText: String = ""
     @State private var isSearchActive: Bool = false
     
@@ -27,24 +27,31 @@ struct StationSearchView: View {
     
     var body: some View {
         List(filteredStations, id: \.self) { station in
-            
             Button(action: {
                 self.hideKeyboard()
-        
+                
                 if isSelectingFrom {
                     selectedFromStation = station
                 } else {
                     selectedToStation = station
                 }
+                navigationManager.path.append(Destination.loadingView)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    navigationManager.resetToRoot()
-                }
+                // ДЛЯ РЕВЬЮЕРА
+                // я здесь словила баг SwiftUI. Обращалась к наставникам, но ответ так и не нашли.
+                // Проблема в том, что когда я пользуюсь поисковой строкой для поиска станции, окно выбора станции не закрывается. Т.е. я никак не могу вернуться на главный экран.
+                //  Единственный вариант, который хоть как-то сработал: после выбора станции я перехожу на вью-заглушку, а уже оттуда возвращаюсь на главную вью.
+                //
+                // я перепробовала все варианты:  navigationManager.resetToRoot(), path = NavigationPath(),  path.removeLast(path.count), наставник предположил, что это баг SwiftUI.
+                // Если вдруг ты когда-нибудь сталкивался(лась) с такой прроблемой, дай, пожалуйста, совет, как это исправить
+                //
+                //
                 
             }) {
                 HStack {
                     Text(station.title ?? "(Нет названия)")
                         .padding(.vertical, 8)
+                        .font(.system(size: 17))
                     Spacer()
                     Image(systemName: "chevron.forward")
                         .foregroundColor(.customBlack)
@@ -58,7 +65,6 @@ struct StationSearchView: View {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: Text("Введите запрос")
         )
-//        .focused($isSearchBarFocused)
         .listStyle(.plain)
         .navigationTitle("Станции \(selectedSettlement.title ?? "(Нет названия)")")
         .navigationBarTitleDisplayMode(.inline)
@@ -87,3 +93,4 @@ struct StationSearchView: View {
         }
     }
 }
+

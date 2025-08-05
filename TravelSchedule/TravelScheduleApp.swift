@@ -1,4 +1,3 @@
-
 import SwiftUI
 import OpenAPIURLSession
 
@@ -8,6 +7,7 @@ enum Destination: Hashable {
     case carrierList(from: Components.Schemas.Station, to: Components.Schemas.Station)
     case carrierDetail
     case filter
+    case loadingView
 }
 
 @main
@@ -64,6 +64,9 @@ struct TravelScheduleApp: App {
                             TransportDetailView()
                         case .filter:
                             FilterView()
+                        case .loadingView:
+                            LoadingView()
+                            .environmentObject(navigationManager)
                         }
                     }
                 }
@@ -82,6 +85,7 @@ struct TravelScheduleApp: App {
                     .tag(1)
             }
             .tint(.customBlack)
+            .background(.background)
             .environmentObject(viewModel)
             .environmentObject(navigationManager)
             .onAppear {

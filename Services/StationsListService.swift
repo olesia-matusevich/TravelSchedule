@@ -1,9 +1,3 @@
-//
-//  StationsListService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import Foundation
 import OpenAPIURLSession
@@ -24,7 +18,6 @@ final class StationsListService: StationsListServiceProtocol {
     }
     
     func getAllStations() async throws -> AllStationsResponse? {
-        
         do {
             let response = try await client.getAllStations(query: .init(apikey: apiKey, transportType: "train"))
             
@@ -44,13 +37,11 @@ final class StationsListService: StationsListServiceProtocol {
                 print("Server error: \(error)")
                 throw ErrorViewType.serverError
             }
-            
         }
     }
     
     func getFilteredCities() async throws -> [Components.Schemas.Settlement] {
         let response = try await getAllStations()
-       
         
         guard let countries = response?.countries else {
             return []
@@ -64,7 +55,6 @@ final class StationsListService: StationsListServiceProtocol {
             }
             let allSettlements = filteredRegions.flatMap { $0.settlements ?? [] }
             
-            // Фильтруем города, у которых title не nil и не пустой, затем сортируем по алфавиту
             let validSettlements = allSettlements.filter { city in
                 if let title = city.title {
                     return !title.isEmpty
@@ -73,7 +63,6 @@ final class StationsListService: StationsListServiceProtocol {
             }
             return validSettlements.sorted { $0.title! < $1.title! }
         }
-        
         return []
     }
 }

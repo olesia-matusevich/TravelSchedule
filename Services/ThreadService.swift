@@ -1,9 +1,3 @@
-//
-//  ThreadService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import OpenAPIURLSession
 

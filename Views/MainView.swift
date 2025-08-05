@@ -11,7 +11,7 @@ struct MainView: View {
     
     @EnvironmentObject private var viewModel: StationsViewModel
     @EnvironmentObject private var navigationManager: NavigationManager
-
+    
     private var isFindButtonEnabled: Bool {
         return selectedFromStation != nil && selectedToStation != nil
     }
@@ -43,7 +43,7 @@ struct MainView: View {
             HStack(spacing: 0) {
                 VStack(spacing: 0) {
                     fromStationField
-                    toStationField  
+                    toStationField
                 }
                 .padding(.trailing, 16)
                 .background(Color.whiteUniversal)
@@ -102,9 +102,6 @@ struct StationSelectionField: View {
     }
 }
 
-//#Preview {
-//    MainView()
-//}
 
 
 

@@ -52,7 +52,6 @@ struct FilterView: View {
                     .background(Color.blueUniversal.cornerRadius(16))
                     .padding(.horizontal)
                     .foregroundColor(.whiteUniversal)
-                    
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
             .padding(.bottom, 24)
@@ -74,8 +73,6 @@ struct FilterTimeItem: View {
         .padding(.horizontal)
     }
 }
-
-
 
 #Preview {
     FilterView()

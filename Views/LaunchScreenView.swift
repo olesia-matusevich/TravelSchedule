@@ -14,7 +14,6 @@ struct LaunchScreenView: View {
             .ignoresSafeArea()
             .toolbar(.hidden, for: .tabBar)
     }
-   
 }
 
 #Preview {

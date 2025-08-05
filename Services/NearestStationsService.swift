@@ -1,9 +1,3 @@
-//
-//  NearestStationsService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -30,10 +24,6 @@ final class NearestStationsService: NearestStationsServiceProtocol {
             lng: lng,
             distance: distance
         ))
-        
-        print("TEST NearestStationsService:")
-        print(try response.ok.hashValue)
-        
         return try response.ok.body.json
     }
 }

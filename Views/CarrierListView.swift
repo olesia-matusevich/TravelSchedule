@@ -16,6 +16,8 @@ struct CarrierListView: View {
     @State private var errorMessage: String?
     @State private var serviceInformations: [ServiceInformation] = []
     
+    @State private var isLoading: Bool = false
+    
     init(fromStation: Components.Schemas.Station, toStation: Components.Schemas.Station) {
         self.fromStation = fromStation
         self.toStation = toStation
@@ -30,26 +32,28 @@ struct CarrierListView: View {
     
     var body: some View {
         VStack {
-            Text("\(fromStation.title ?? "Откуда") → \(toStation.title ?? "Куда")")
-                .font(.system(size: 24))
-                .bold()
-                .padding(16)
-            List(serviceInformations, id: \.self) { service in
-                Button(action: {
-                    navigationManager.path.append(Destination.carrierDetail)
-                }) {
-                    CarrierRow(serviceInfo: service)
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .scaleEffect(1.5)
+            } else {
+                Text("\(fromStation.title ?? "Откуда") → \(toStation.title ?? "Куда")")
+                    .font(.system(size: 24))
+                    .bold()
+                    .padding(.leading, 16)
+                    .padding(.trailing, 16)
+                List(serviceInformations, id: \.self) { service in
+                    Button(action: {
+                        navigationManager.path.append(Destination.carrierDetail)
+                    }) {
+                        CarrierRow(serviceInfo: service)
+                    }
+                    .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
+                    .listRowSeparator(.hidden)
+                    .background(.customWhite)
                 }
-                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
-                .listRowSeparator(.hidden)
-                .background(.customWhite)
-                //                    .onTapGesture {
-                //                        //                        viewModel.selectCarrier(with: service.carrierCode)
-                //                        //                        path.append(Destination.carrierInfo)
-                ////                        NavigationLink(destination: TransportDetailView())
-                //                    }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
         }
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
@@ -68,6 +72,8 @@ struct CarrierListView: View {
         }
         .navigationBarBackButtonHidden(true)
         .overlay {
+           
+            
             if serviceInformations.isEmpty, errorMessage == nil {
                 Text("Вариантов нет")
                     .font(.system(size: 24))
@@ -107,7 +113,9 @@ struct CarrierListView: View {
         .onAppear {
             // Запускаем асинхронную загрузку данных
             Task {
+                isLoading = true
                 await loadRaces()
+                isLoading = false
             }
         }
     }

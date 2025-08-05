@@ -2,12 +2,12 @@ import SwiftUI
 import OpenAPIURLSession
 
 struct CitySearchView: View {
-
+    
     @EnvironmentObject private var viewModel: StationsViewModel
     @EnvironmentObject private var navigationManager: NavigationManager
     
     @State private var searchText: String = ""
-   
+    
     let isSelectingFrom: Bool
     
     var filteredCities: [Components.Schemas.Settlement] {
@@ -27,6 +27,7 @@ struct CitySearchView: View {
                 HStack {
                     Text(city.title ?? "(Нет названия)")
                         .padding(.vertical, 8)
+                        .font(.system(size: 17))
                     Spacer()
                     Image(systemName: "chevron.forward")
                         .foregroundColor(.customBlack)
@@ -59,7 +60,6 @@ struct CitySearchView: View {
         }
         .navigationBarBackButtonHidden(true)
         .overlay {
-            
             if filteredCities.isEmpty {
                 Text("Город не найден")
                     .font(.system(size: 24))
@@ -68,4 +68,4 @@ struct CitySearchView: View {
             }
         }
     }
-    }
+}

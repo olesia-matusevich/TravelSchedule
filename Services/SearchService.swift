@@ -1,9 +1,3 @@
-//
-//  SearchService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import OpenAPIURLSession
 import Foundation
@@ -24,12 +18,6 @@ final class SearchService: SearchServiceProtocol {
     }
     
     func search(from: String, to: String) async throws -> [ServiceInformation] {
-        //        func search(from: String, to: String) async throws -> Segments {
-        //        let response = try await client.getSchedualBetweenStations(query: .init(
-        //            apikey: apiKey,
-        //            from: from,
-        //            to: to)
-        //        )
         do {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -44,12 +32,6 @@ final class SearchService: SearchServiceProtocol {
                     transport_types: "train",
                     transfers: true
                 ))
-            
-            //        print("TEST SearchService:")
-            //        print(try response.ok.hashValue)
-            
-            //        return try response.ok.body.json
-            
             
             let searchStationResponse = try response.ok.body.json
             
@@ -118,7 +100,6 @@ final class SearchService: SearchServiceProtocol {
                     else {
                         continue
                     }
-                    
                     let departureTimeString = timeFormatter.string(from: departureDate)
                     let arrivalTimeString = timeFormatter.string(from: arrivalDate)
                     let dateString = dayMonthFormatter.string(from: startDate)
@@ -135,13 +116,10 @@ final class SearchService: SearchServiceProtocol {
                         journeyTime: Int(ceil(journeyTimeSeconds / 3600)),
                         date: dateString
                     )
-                    
                     result.append(newService)
                 }
             }
-            
             return result
-            
         } catch {
             if error is OpenAPIRuntime.ClientError {
                 print("Client error: \(error)")

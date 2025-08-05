@@ -1,9 +1,3 @@
-//
-//  CopyrightService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -24,10 +18,6 @@ final class CopyrightService: CopyrightServiceProtocol {
     
     func getCopyrightInfo() async throws -> CopyrightResponse {
         let response = try await client.getCopyrightInfo(query: .init(apikey: apiKey))
-        
-        print("TEST CopyrightService:")
-        print(try response.ok.hashValue)
-        
         return try response.ok.body.json
     }
 }
