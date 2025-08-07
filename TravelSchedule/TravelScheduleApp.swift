@@ -7,7 +7,6 @@ enum Destination: Hashable {
     case carrierList(from: Components.Schemas.Station, to: Components.Schemas.Station)
     case carrierDetail
     case filter
-    case loadingView
 }
 
 @main
@@ -18,8 +17,6 @@ struct TravelScheduleApp: App {
     
     @State private var selectedFromStation: Components.Schemas.Station? = nil
     @State private var selectedToStation: Components.Schemas.Station? = nil
-    
-//   /* */private let tabItemSize: Double = 49
     
     private func setupAppearance() {
         let tabBarAppearance = UITabBarAppearance()
@@ -65,9 +62,6 @@ struct TravelScheduleApp: App {
                             TransportDetailView()
                         case .filter:
                             FilterView()
-                        case .loadingView:
-                            LoadingView()
-                            .environmentObject(navigationManager)
                         }
                     }
                 }

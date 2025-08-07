@@ -4,8 +4,6 @@ struct SettingsView: View {
 
     @EnvironmentObject var themeManager: ThemeManager
     
-//    @Environment(\.colorScheme) private var colorScheme
-    
     @State private var isDarkMode: Bool = false
     @State private var navigationPath = NavigationPath()
     

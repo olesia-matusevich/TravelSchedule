@@ -111,7 +111,6 @@ struct CarrierListView: View {
             .padding(.bottom, 24)
         }
         .onAppear {
-            // Запускаем асинхронную загрузку данных
             Task {
                 isLoading = true
                 await loadRaces()
@@ -126,7 +125,6 @@ struct CarrierListView: View {
                 from: fromStation.codes?.yandex_code ?? "",
                 to: toStation.codes?.yandex_code ?? ""
             )
-            //                segments = response.segments ?? []
             errorMessage = nil
             serviceInformations = result
             return result

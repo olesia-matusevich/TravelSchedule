@@ -1,10 +1,3 @@
-//
-//  LaunchScreemView.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 28/07/2025.
-//
-
 import SwiftUI
 
 struct LaunchScreenView: View {
