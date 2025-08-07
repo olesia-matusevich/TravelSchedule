@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct TransportDetailView: View {
+    
+    @EnvironmentObject private var navigationManager: NavigationManager
+    
     var body: some View {
         VStack(alignment: .leading) {
             Image("mock_icon")
@@ -30,6 +33,22 @@ struct TransportDetailView: View {
             Spacer()
         }
         .navigationTitle("Информация о перевозчике")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                HStack(spacing: 0) {
+                    Button(action: {
+                        navigationManager.path.removeLast()
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(.customBlack)
+                    }
+                    Spacer()
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
     }

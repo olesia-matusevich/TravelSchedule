@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FilterView: View {
     @State private var showTransferRaces: Bool = false
+    @EnvironmentObject private var navigationManager: NavigationManager
     
     var body: some View {
         VStack {
@@ -40,6 +41,22 @@ struct FilterView: View {
             .padding([.horizontal, .top])
             Spacer()
         }
+        .toolbar(.hidden, for: .tabBar)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                HStack(spacing: 0) {
+                    Button(action: {
+                        navigationManager.path.removeLast()
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(.customBlack)
+                    }
+                    Spacer()
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
         .overlay{
             Button(action: {
                 // TODO: добавить действие кнопки применить

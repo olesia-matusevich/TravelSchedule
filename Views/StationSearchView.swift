@@ -13,7 +13,6 @@ struct StationSearchView: View {
     let isSelectingFrom: Bool
     
     @State private var searchText: String = ""
-    @State private var isSearchActive: Bool = false
     
     var filteredStations: [Components.Schemas.Station] {
         let stations = searchText.isEmpty ? (selectedSettlement.stations ?? []) : (selectedSettlement.stations ?? []).filter { station in
@@ -26,60 +25,54 @@ struct StationSearchView: View {
     }
     
     var body: some View {
-        List(filteredStations, id: \.self) { station in
-            Button(action: {
-                self.hideKeyboard()
-                
-                if isSelectingFrom {
-                    selectedFromStation = station
-                } else {
-                    selectedToStation = station
-                }
-                navigationManager.path.append(Destination.loadingView)
-                
-                // ДЛЯ РЕВЬЮЕРА
-                // я здесь словила баг SwiftUI. Обращалась к наставникам, но ответ так и не нашли.
-                // Проблема в том, что когда я пользуюсь поисковой строкой для поиска станции, окно выбора станции не закрывается. Т.е. я никак не могу вернуться на главный экран.
-                //  Единственный вариант, который хоть как-то сработал: после выбора станции я перехожу на вью-заглушку, а уже оттуда возвращаюсь на главную вью.
-                //
-                // я перепробовала все варианты:  navigationManager.resetToRoot(), path = NavigationPath(),  path.removeLast(path.count), наставник предположил, что это баг SwiftUI.
-                // Если вдруг ты когда-нибудь сталкивался(лась) с такой прроблемой, дай, пожалуйста, совет, как это исправить
-                //
-                //
-                
-            }) {
-                HStack {
-                    Text(station.title ?? "(Нет названия)")
-                        .padding(.vertical, 8)
-                        .font(.system(size: 17))
-                    Spacer()
-                    Image(systemName: "chevron.forward")
-                        .foregroundColor(.customBlack)
+        VStack(spacing: 0) {
+            SearchBar(searchText: $searchText)
+                .padding(.top, 8)
+                .padding(.bottom, 8)
+            
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(filteredStations, id: \.self) { station in
+                        Button(action: {
+                            self.hideKeyboard()
+                            
+                            if isSelectingFrom {
+                                selectedFromStation = station
+                            } else {
+                                selectedToStation = station
+                            }
+                            navigationManager.resetToRoot()
+                        }) {
+                            HStack(alignment: .center) {
+                                Text(station.title ?? "(Нет названия)")
+                                    .font(.system(size: 17))
+                                    .padding(.leading, 16)
+                                    .foregroundColor(.customBlack)
+                                Spacer()
+                                Image(systemName: "chevron.forward")
+                                    .foregroundColor(.customBlack)
+                                    .padding(.trailing, 18)
+                            }
+                            .frame(height: 60)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
-            .listRowSeparator(.hidden)
-            .buttonStyle(.plain)
         }
-        .searchable(
-            text: $searchText,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: Text("Введите запрос")
-        )
-        .listStyle(.plain)
         .navigationTitle("Станции \(selectedSettlement.title ?? "(Нет названия)")")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                HStack(spacing: 0) {
-                    Button(action: {
-                        navigationManager.path.removeLast()
-                    }) {
+                Button(action: {
+                    navigationManager.path.removeLast()
+                }) {
+                    HStack(spacing: 0) {
                         Image(systemName: "chevron.backward")
-                            .foregroundColor(.customBlack)
                     }
-                    Spacer()
                 }
+                .foregroundColor(.customBlack)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -88,9 +81,8 @@ struct StationSearchView: View {
                 Text("Станция не найдена")
                     .font(.system(size: 24))
                     .fontWeight(.bold)
-                    .foregroundColor(.blackDay)
+                    .foregroundColor(.customBlack)
             }
         }
     }
 }
-

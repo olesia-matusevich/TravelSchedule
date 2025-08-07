@@ -12,13 +12,14 @@ enum Destination: Hashable {
 
 @main
 struct TravelScheduleApp: App {
+    @StateObject private var themeManager = ThemeManager()
     @StateObject private var viewModel = StationsViewModel(apiKey: apiKey)
     @StateObject private var navigationManager = NavigationManager()
     
     @State private var selectedFromStation: Components.Schemas.Station? = nil
     @State private var selectedToStation: Components.Schemas.Station? = nil
     
-    private let tabItemSize: Double = 30
+//   /* */private let tabItemSize: Double = 49
     
     private func setupAppearance() {
         let tabBarAppearance = UITabBarAppearance()
@@ -73,21 +74,22 @@ struct TravelScheduleApp: App {
                 .tabItem {
                     Image("schedule_tab_ic")
                         .renderingMode(.template)
-                        .frame(width: tabItemSize, height: tabItemSize)
                 }
                 .tag(0)
                 SettingsView()
                     .tabItem {
                         Image("settings_tab_ic")
                             .renderingMode(.template)
-                            .frame(width: tabItemSize, height: tabItemSize)
                     }
                     .tag(1)
+                    .environmentObject(themeManager)
+                    
             }
             .tint(.customBlack)
             .background(.background)
             .environmentObject(viewModel)
             .environmentObject(navigationManager)
+            .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
             .onAppear {
                 setupAppearance()
             }
