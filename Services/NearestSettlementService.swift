@@ -1,9 +1,3 @@
-//
-//  NearestSettlementService.swift
-//  TravelSchedule
-//
-//  Created by Alesia Matusevich on 22/07/2025.
-//
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -28,10 +22,6 @@ final class NearestSettlementService: NearestSettlementServiceProtocol {
     
     func getNearestCity(lat: Double, lng: Double) async throws -> NearestCityResponse {
         let response = try await client.getNearestCity(query: .init(apikey: apiKey, lat: lat, lng: lng))
-        
-        print("TEST NearestSettlementService:")
-        print(try response.ok.hashValue)
-        
         return try response.ok.body.json
     }
 }

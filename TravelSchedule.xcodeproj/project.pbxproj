@@ -17,6 +17,10 @@
 		F809DF392E2FAD3E0060DA0D /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF382E2FAD3E0060DA0D /* SearchService.swift */; };
 		F809DF3B2E2FAD5A0060DA0D /* StationsListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF3A2E2FAD5A0060DA0D /* StationsListService.swift */; };
 		F809DF3D2E2FAD740060DA0D /* ThreadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809DF3C2E2FAD740060DA0D /* ThreadService.swift */; };
+		F87105C22E3CC9920029D01C /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87105C12E3CC9920029D01C /* ThemeManager.swift */; };
+		F871066B2E3F80260029D01C /* ServiceInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F871066A2E3F80260029D01C /* ServiceInformation.swift */; };
+		F8C123452E37707300D34F2E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C123442E37707300D34F2E /* Constants.swift */; };
+		F8D953052E40F13E00B1537B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D953042E40F13E00B1537B /* NavigationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,17 +33,49 @@
 		F809DF382E2FAD3E0060DA0D /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		F809DF3A2E2FAD5A0060DA0D /* StationsListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationsListService.swift; sourceTree = "<group>"; };
 		F809DF3C2E2FAD740060DA0D /* ThreadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadService.swift; sourceTree = "<group>"; };
+		F87105C12E3CC9920029D01C /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		F871066A2E3F80260029D01C /* ServiceInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceInformation.swift; sourceTree = "<group>"; };
+		F8C123442E37707300D34F2E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F8D953042E40F13E00B1537B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F8D953112E414B0D00B1537B /* Exceptions for "TravelSchedule" folder in "TravelSchedule" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F809DE762E2E3AC00060DA0D /* TravelSchedule */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F809DE792E2E3AC00060DA0D /* TravelSchedule */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F8D953112E414B0D00B1537B /* Exceptions for "TravelSchedule" folder in "TravelSchedule" target */,
+			);
 			path = TravelSchedule;
 			sourceTree = "<group>";
 		};
 		F809DE9A2E2F95AB0060DA0D /* Yaml */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Yaml;
+			sourceTree = "<group>";
+		};
+		F8C1233D2E376D2B00D34F2E /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F8C123412E376FD500D34F2E /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F8C123572E37759600D34F2E /* UI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -60,9 +96,13 @@
 		F809DE6E2E2E3AC00060DA0D = {
 			isa = PBXGroup;
 			children = (
+				F8C123572E37759600D34F2E /* UI */,
+				F8C123412E376FD500D34F2E /* ViewModels */,
+				F8C1233D2E376D2B00D34F2E /* Views */,
 				F809DF262E2F97B90060DA0D /* Services */,
 				F809DE9A2E2F95AB0060DA0D /* Yaml */,
 				F809DE792E2E3AC00060DA0D /* TravelSchedule */,
+				F87D26E42E41659600A09B39 /* Helpers */,
 				F809DE782E2E3AC00060DA0D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +130,17 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		F87D26E42E41659600A09B39 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F8D953042E40F13E00B1537B /* NavigationManager.swift */,
+				F87105C12E3CC9920029D01C /* ThemeManager.swift */,
+				F8C123442E37707300D34F2E /* Constants.swift */,
+				F871066A2E3F80260029D01C /* ServiceInformation.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -109,6 +160,9 @@
 			fileSystemSynchronizedGroups = (
 				F809DE792E2E3AC00060DA0D /* TravelSchedule */,
 				F809DE9A2E2F95AB0060DA0D /* Yaml */,
+				F8C1233D2E376D2B00D34F2E /* Views */,
+				F8C123412E376FD500D34F2E /* ViewModels */,
+				F8C123572E37759600D34F2E /* UI */,
 			);
 			name = TravelSchedule;
 			packageProductDependencies = (
@@ -177,7 +231,11 @@
 				F809DF332E2FACD00060DA0D /* NearestSettlementService.swift in Sources */,
 				F809DF282E2F97CE0060DA0D /* NearestStationsService.swift in Sources */,
 				F809DF3B2E2FAD5A0060DA0D /* StationsListService.swift in Sources */,
+				F87105C22E3CC9920029D01C /* ThemeManager.swift in Sources */,
 				F809DF372E2FAD1B0060DA0D /* ScheduleService.swift in Sources */,
+				F8D953052E40F13E00B1537B /* NavigationManager.swift in Sources */,
+				F8C123452E37707300D34F2E /* Constants.swift in Sources */,
+				F871066B2E3F80260029D01C /* ServiceInformation.swift in Sources */,
 				F809DF392E2FAD3E0060DA0D /* SearchService.swift in Sources */,
 				F809DF352E2FACF50060DA0D /* CopyrightService.swift in Sources */,
 				F809DF3D2E2FAD740060DA0D /* ThreadService.swift in Sources */,
@@ -324,9 +382,10 @@
 				DEVELOPMENT_TEAM = ZZSK2UNSA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TravelSchedule/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -358,9 +417,10 @@
 				DEVELOPMENT_TEAM = ZZSK2UNSA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TravelSchedule/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

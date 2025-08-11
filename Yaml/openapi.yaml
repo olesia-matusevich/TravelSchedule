@@ -517,28 +517,6 @@ components:
                 description: Признак наличия пересадок по маршруту.
               tickets_info:
                 $ref: '#/components/schemas/TicketsInfo'
-    Segment:
-      type: object
-      properties:
-        from:
-          $ref: '#/components/schemas/Station'
-        to:
-          $ref: '#/components/schemas/Station'
-        departure:
-          type: string
-          #format: date-time
-          description: Время отправления
-        arrival:
-          type: string
-          #format: date-time
-          description: Время прибытия
-        thread:
-          $ref: '#/components/schemas/Thread'
-        tickets_info:
-          $ref: '#/components/schemas/TicketsInfo'
-        duration:
-          type: integer
-          description: Длительность рейса в секундах
     Pagination:
       type: object
       properties:
@@ -960,3 +938,80 @@ components:
               type: string
               description: Уведомительный текст
               example: "Данные предоставлены сервисом Яндекс Расписания"
+    Segment:
+      type: object
+      properties:
+        thread:
+          allOf:
+            - type: object
+              properties:
+                carrier:
+                  allOf:
+                    - type: object
+                      properties:
+                        code:
+                          type: number
+                          example: 680
+                          description: Код перевозчика
+                        title:
+                          type: string
+                          example: "Россия"
+                          description: Название перевозчика
+                        logo:
+                          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              thread:
+                type: object
+                properties:
+                  carrier:
+                    type: object
+                    properties:
+                      code:
+                        type: number
+                        example: 4240
+                        description: Код перевозчика
+                      title:
+                        type: string
+                        example: "РЖД/ДОСС"
+                        description: Название перевозчика
+                required:
+                  - carrier
+              duration:
+                type: number
+                example: 14460
+              start_date:
+                type: string
+                example: "2025-07-02"
+        departure:
+          type: string
+          example: "2017-03-28T06:00:00+03:00"
+        arrival:
+          type: string
+          example: "2017-03-28 10:15:00"
+        has_transfers:
+          type: boolean
+          example: false
+        duration:
+          type: number
+          example: 8100
+        start_date:
+          type: string
+          format: date
+          example: "2017-01-02"
+        transfers:
+          type: array
+          items:
+            type: object
+            properties:
+              short_title:
+                type: string
+                example: "Москва"
+      required:
+      - departure
+      - arrival
+      - has_transfers
+              
