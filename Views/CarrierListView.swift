@@ -73,7 +73,6 @@ struct CarrierListView: View {
         .navigationBarBackButtonHidden(true)
         .overlay {
            
-            
             if serviceInformations.isEmpty, errorMessage == nil {
                 Text("Вариантов нет")
                     .font(.system(size: 24))

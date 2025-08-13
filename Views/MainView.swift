@@ -6,6 +6,8 @@ struct MainView: View {
     @State private var searchTextFrom: String = "Откуда"
     @State private var searchTextTo: String = "Куда"
     
+    @StateObject private var storiesViewModel = StoriesViewModel()
+    
     @Binding var selectedFromStation: Components.Schemas.Station?
     @Binding var selectedToStation: Components.Schemas.Station?
     
@@ -39,7 +41,19 @@ struct MainView: View {
     }
     
     var body: some View {
+        
         VStack {
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .center, spacing: 12) {
+                    ForEach(storiesViewModel.story) { story in
+                        StoriesCell(stories: story)
+                            .environmentObject(storiesViewModel)
+                    }
+                }
+            }
+            .frame(height: 140)
+            .scrollIndicators(.hidden)
+            
             HStack(spacing: 0) {
                 VStack(spacing: 0) {
                     fromStationField
@@ -63,7 +77,7 @@ struct MainView: View {
             .padding()
             .background(Color.blueUniversal)
             .cornerRadius(20)
-            .padding(.top, 208)
+            .padding(.top, 44)
             
             if isFindButtonEnabled, let from = selectedFromStation, let to = selectedToStation {
                 Button(action: {
@@ -75,11 +89,16 @@ struct MainView: View {
             Spacer()
         }
         .padding(.horizontal)
+        .padding(.top, 24)
+        
         .onChange(of: selectedFromStation) { _, newValue in
             searchTextFrom = newValue?.title ?? "Откуда"
         }
         .onChange(of: selectedToStation) { _, newValue in
             searchTextTo = newValue?.title ?? "Куда"
+        }
+        .fullScreenCover(isPresented: $storiesViewModel.showStoryView) {
+            StoryView(viewModel: storiesViewModel)
         }
     }
 }
