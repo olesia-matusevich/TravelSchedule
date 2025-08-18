@@ -17,6 +17,8 @@ enum ErrorViewType: String, Error {
 }
 
 struct ErrorView: View {
+    @Binding var navigationPath: NavigationPath
+    
     let errorType: ErrorViewType
     private let imageSize: Double = 223
     
@@ -39,7 +41,7 @@ struct ErrorView: View {
     }
 }
 
-#Preview {
-    ErrorView(errorType: .serverError)
-    ErrorView(errorType: .networkError)
-}
+//#Preview {
+////    ErrorView(errorType: .serverError)
+////    ErrorView(errorType: .networkError)
+//}
