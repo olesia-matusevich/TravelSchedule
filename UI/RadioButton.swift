@@ -9,7 +9,6 @@ struct RadioButton: View {
             Circle()
                 .frame(width: 20, height: 20)
                 .foregroundColor(.customWhite)
-                
                 .overlay(
                     Circle()
                         .stroke(Color.customBlack, lineWidth: 2)

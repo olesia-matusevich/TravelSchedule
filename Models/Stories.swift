@@ -1,6 +1,6 @@
 import Foundation
 
-struct Stories: Identifiable, Hashable {
+struct Stories: Identifiable, Sendable, Hashable {
     var id = UUID()
     var previewImage: String
     var images: [String]

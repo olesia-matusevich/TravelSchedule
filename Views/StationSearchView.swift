@@ -1,51 +1,41 @@
 import SwiftUI
-import OpenAPIURLSession
 
 struct StationSearchView: View {
     
-    @EnvironmentObject private var viewModel: StationsViewModel
     @EnvironmentObject private var navigationManager: NavigationManager
+    @EnvironmentObject private var stationsVM: StationsViewModel
     
-    @Binding var selectedFromStation: Components.Schemas.Station?
-    @Binding var selectedToStation: Components.Schemas.Station?
-    
-    let selectedSettlement: Components.Schemas.Settlement
+    @StateObject var viewModel: StationSearchViewModel
     let isSelectingFrom: Bool
     
-    @State private var searchText: String = ""
-    
-    var filteredStations: [Components.Schemas.Station] {
-        let stations = searchText.isEmpty ? (selectedSettlement.stations ?? []) : (selectedSettlement.stations ?? []).filter { station in
-            station.title?.lowercased().contains(searchText.lowercased()) ?? false
-        }
-        return Array(stations)
-            .filter { $0.transport_type == "train" }
-            .filter { $0.title != nil && !$0.title!.isEmpty }
-            .sorted { $0.title! < $1.title! }
+    init(viewModel: StationSearchViewModel, isSelectingFrom: Bool) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        self.isSelectingFrom = isSelectingFrom
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            SearchBar(searchText: $searchText)
-                .padding(.top, 8)
-                .padding(.bottom, 8)
+            SearchBar(
+                searchText: Binding(
+                    get: { viewModel.searchText },
+                    set: { viewModel.updateQuery($0) }
+                )
+            )
+            .padding(.vertical, 8)
             
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    ForEach(filteredStations, id: \.self) { station in
-                        Button(action: {
-                            self.hideKeyboard()
-                            
+                    ForEach(viewModel.filteredStations, id: \.self) { station in
+                        Button {
                             if isSelectingFrom {
-                                selectedFromStation = station
+                                stationsVM.selectedFromStation = station
                             } else {
-                                selectedToStation = station
+                                stationsVM.selectedToStation = station
                             }
                             navigationManager.resetToRoot()
-                        }) {
-                            HStack(alignment: .center) {
+                        } label: {
+                            HStack {
                                 Text(station.title ?? "(Нет названия)")
-                                    .font(.system(size: 17))
                                     .padding(.leading, 16)
                                     .foregroundColor(.customBlack)
                                 Spacer()
@@ -60,7 +50,7 @@ struct StationSearchView: View {
                 }
             }
         }
-        .navigationTitle("Станции \(selectedSettlement.title ?? "(Нет названия)")")
+        .navigationTitle("Станции \(viewModel.settlement.title ?? "(Нет названия)")")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
@@ -77,12 +67,14 @@ struct StationSearchView: View {
         }
         .navigationBarBackButtonHidden(true)
         .overlay {
-            if filteredStations.isEmpty {
+            if viewModel.filteredStations.isEmpty {
                 Text("Станция не найдена")
                     .font(.system(size: 24))
                     .fontWeight(.bold)
                     .foregroundColor(.customBlack)
             }
         }
+        .task { viewModel.load() }
     }
 }
+

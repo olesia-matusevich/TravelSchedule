@@ -10,7 +10,6 @@ class StoriesViewModel: ObservableObject {
     @Published var progress: CGFloat = 0.0
     @Published var viewedStories: Set<UUID> = []
     
-    
     private var timer: Timer.TimerPublisher = Timer.publish(every: 0.05, on: .main, in: .common)
     private var cancellable: AnyCancellable?
     private let imageDuration: TimeInterval = 10.0

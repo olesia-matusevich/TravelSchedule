@@ -20,11 +20,8 @@ final class StationsListService: StationsListServiceProtocol {
     func getAllStations() async throws -> AllStationsResponse? {
         do {
             let response = try await client.getAllStations(query: .init(apikey: apiKey, transportType: "train"))
-            
             let responseBody = try response.ok.body.html
-           
-            print("Загрузка данных:")
-            print(try response.ok.hashValue)
+            
             let limit = 50 * 1024 * 1024
             let fullData = try await Data(collecting: responseBody, upTo: limit)
             
