@@ -1,105 +1,103 @@
+
 import SwiftUI
 import OpenAPIURLSession
 
 struct MainView: View {
     
-    @State private var searchTextFrom: String = "Откуда"
-    @State private var searchTextTo: String = "Куда"
-    
-    @StateObject private var storiesViewModel = StoriesViewModel()
-    
-    @Binding var selectedFromStation: Components.Schemas.Station?
-    @Binding var selectedToStation: Components.Schemas.Station?
-    
-    @EnvironmentObject private var viewModel: StationsViewModel
     @EnvironmentObject private var navigationManager: NavigationManager
+    @EnvironmentObject private var stationsVM: StationsViewModel
+    @StateObject private var viewModel: MainViewModel
+    @State private var presentStory = false
     
-    private var isFindButtonEnabled: Bool {
-        return selectedFromStation != nil && selectedToStation != nil
-    }
-    
-    private var findButtonLabel: some View {
-        Text("Найти")
-            .fontWeight(.bold)
-            .foregroundColor(.whiteUniversal)
-            .padding(.horizontal, 45)
-            .padding(.vertical, 20)
-            .background(Color.blueUniversal)
-            .cornerRadius(16)
-    }
-    
-    private var fromStationField: some View {
-        StationSelectionField(title: searchTextFrom, isSelected: selectedFromStation != nil) {
-            navigationManager.path.append(Destination.citySearch(isSelectingFrom: true))
-        }
-    }
-    
-    private var toStationField: some View {
-        StationSelectionField(title: searchTextTo, isSelected: selectedToStation != nil) {
-            navigationManager.path.append(Destination.citySearch(isSelectingFrom: false))
-        }
+    init(stationsVM: StationsViewModel) {
+        _viewModel = StateObject(wrappedValue: MainViewModel(stationsVM: stationsVM))
     }
     
     var body: some View {
-        
         VStack {
             ScrollView(.horizontal) {
-                LazyHStack(alignment: .center, spacing: 12) {
-                    ForEach(storiesViewModel.story) { story in
+                LazyHStack(spacing: 12) {
+                    ForEach(viewModel.storiesVM.story) { story in
                         StoriesCell(stories: story)
-                            .environmentObject(storiesViewModel)
+                            .environmentObject(viewModel.storiesVM)
                     }
                 }
             }
             .frame(height: 140)
             .scrollIndicators(.hidden)
+            StationSelectionSection(viewModel: viewModel)
             
-            HStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    fromStationField
-                    toStationField
-                }
-                .padding(.trailing, 16)
-                .background(Color.whiteUniversal)
-                .cornerRadius(20)
-                .frame(height: 96)
-                
-                Button(action: {
-                    guard selectedFromStation != nil && selectedToStation != nil else { return }
-                    (searchTextFrom, searchTextTo) = (searchTextTo, searchTextFrom)
-                    (selectedFromStation, selectedToStation) = (selectedToStation, selectedFromStation)
-                }) {
-                    Image("switch_ic")
-                        .frame(width: 32, height: 32)
-                }
-                .padding(.leading)
-            }
-            .padding()
-            .background(Color.blueUniversal)
-            .cornerRadius(20)
-            .padding(.top, 44)
-            
-            if isFindButtonEnabled, let from = selectedFromStation, let to = selectedToStation {
-                Button(action: {
+            if let from = stationsVM.selectedFromStation,
+               let to = stationsVM.selectedToStation {
+                Button {
                     navigationManager.path.append(Destination.carrierList(from: from, to: to))
-                }) {
-                    findButtonLabel
+                } label: {
+                    Text("Найти")
+                        .fontWeight(.bold)
+                        .foregroundColor(.whiteUniversal)
+                        .padding(.horizontal, 45)
+                        .padding(.vertical, 20)
+                        .background(Color.blueUniversal)
+                        .cornerRadius(16)
                 }
             }
             Spacer()
         }
-        .padding(.horizontal)
-        .padding(.top, 24)
-        
-        .onChange(of: selectedFromStation) { _, newValue in
-            searchTextFrom = newValue?.title ?? "Откуда"
+        .padding(.horizontal).padding(.top, 24)
+        .fullScreenCover(isPresented: $presentStory) {
+            StoryView(viewModel: viewModel.storiesVM)
         }
-        .onChange(of: selectedToStation) { _, newValue in
-            searchTextTo = newValue?.title ?? "Куда"
+        .onReceive(viewModel.storiesVM.$showStoryView) { shouldShow in
+            presentStory = shouldShow
         }
-        .fullScreenCover(isPresented: $storiesViewModel.showStoryView) {
-            StoryView(viewModel: storiesViewModel)
+        .onChange(of: presentStory) { _, new in
+            if !new {
+                viewModel.storiesVM.showStoryView = false
+            }
         }
+        .task {
+            await stationsVM.loadCitiesIfNeeded()
+        }
+    }
+}
+
+
+private struct StationSelectionSection: View {
+    @EnvironmentObject private var navigationManager: NavigationManager
+    @EnvironmentObject private var stationsVM: StationsViewModel
+    @ObservedObject var viewModel: MainViewModel
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                StationSelectionField(
+                    title: viewModel.stationsVM.selectedFromStation?.title ?? "Откуда",
+                    isSelected: viewModel.stationsVM.selectedFromStation != nil
+                ) {
+                    navigationManager.path.append(Destination.citySearch(isSelectingFrom: true))
+                }
+                
+                StationSelectionField(
+                    title: viewModel.stationsVM.selectedToStation?.title ?? "Куда",
+                    isSelected: viewModel.stationsVM.selectedToStation != nil
+                ) {
+                    navigationManager.path.append(Destination.citySearch(isSelectingFrom: false))
+                }
+            }
+            .padding(.trailing, 16)
+            .background(Color.whiteUniversal)
+            .cornerRadius(20)
+            .frame(height: 96)
+            
+            Button { stationsVM.swapStations() } label: {
+                Image("switch_ic").frame(width: 32, height: 32)
+            }
+            .padding(.leading)
+        }
+        .padding()
+        .background(Color.blueUniversal)
+        .cornerRadius(20)
+        .padding(.top, 44)
     }
 }
 
@@ -120,7 +118,4 @@ struct StationSelectionField: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 }
-
-
-
 

@@ -12,18 +12,12 @@ struct CarrierRow: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack {
-                Image("mock_icon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 38, height: 38)
-                    .cornerRadius(12)
-                    .frame(maxHeight: .infinity, alignment: .center)
+                logoView
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         Text(serviceInfo.carrierTitle)
                             .font(.system(size: 17, weight: .regular))
                             .foregroundStyle(Color.black)
-                        
                         if serviceInfo.isTransfer {
                             Text("С пересадкой в \(serviceInfo.transferStation ?? "")")
                                 .font(.system(size: 12, weight: .regular))
@@ -64,6 +58,27 @@ struct CarrierRow: View {
         .background(Color.lightGray)
         .clipShape(.rect(cornerRadius: 24))
         .listRowBackground(Color.customWhite)
+    }
+    
+    private var logoView: some View {
+        AsyncImage(url: serviceInfo.imageURL) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: logoSize, height: logoSize)
+                    .background(Color.white)
+                    .clipShape(.rect(cornerRadius: 12))
+            @unknown default:
+                Image("mock_icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: logoSize, height: logoSize)
+                    .background(Color.white)
+                    .clipShape(.rect(cornerRadius: 12))
+            }
+        }
     }
 }
 

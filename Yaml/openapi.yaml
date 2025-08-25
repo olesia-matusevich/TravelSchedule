@@ -354,9 +354,9 @@ paths:
   /v3.0/carrier/:
     get:
       tags:
-        - getCarrierInfo
+        - getCarrier
       summary: Информация о перевозчике
-      operationId: getCarrierInfo
+      operationId: getCarrier
       parameters:
         - name: apikey
           in: query
@@ -368,24 +368,6 @@ paths:
           in: query
           description: Код перевозчика
           required: true
-          schema:
-            type: string
-        - name: system
-          in: query
-          description: Система кодирования (yandex, iata, sirena, express, esr)
-          required: false
-          schema:
-            type: string
-        - name: lang
-          in: query
-          description: Язык возвращаемой информации (например, ru_RU)
-          required: false
-          schema:
-            type: string
-        - name: format
-          in: query
-          description: Формат ответа (json по умолчанию)
-          required: false
           schema:
             type: string
       responses:
@@ -638,41 +620,30 @@ components:
       type: object
       properties:
         code:
-          type: integer
-          description: Код перевозчика в системе Яндекс Расписаний
-        contacts:
-          type: string
-          description: Контактная информация
+          type: number
+          example: 680
+          description: Код перевозчика
         url:
           type: string
+          example: "http://www.example.com/"
           description: Ссылка на сайт перевозчика
         title:
           type: string
+          example: "Россия"
           description: Название перевозчика
         phone:
           type: string
-          description: Контактный телефон перевозчика
-        address:
-          type: string
-          description: Адрес перевозчика
+          example: ""
+          description: Контактный номер телефона перевозчика
         logo:
           type: string
-          description: Ссылка на логотип перевозчика
+          format: uri-reference
+          example: "//yastatic.net/rasp/media/data/company/logo/logo_1.jpg"
+          description: URL логотипа компании
         email:
           type: string
-          description: Электронная почта перевозчика
-        codes:
-          type: object
-          properties:
-            icao:
-              type: string
-              description: Код перевозчика в системе ICAO
-            sirena:
-              type: string
-              description: Код перевозчика в системе Sirena
-            iata:
-              type: string
-              description: Код перевозчика в системе IATA
+          example: ""
+          description: Электронный почтовый адрес перевозчика
     TicketsInfo:
       type: object
       properties:
@@ -841,10 +812,36 @@ components:
     CarrierResponse:
       type: object
       properties:
-        carriers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Carrier'
+        carrier:
+          $ref: "#/components/schemas/CarrierItem"
+    CarrierItem:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 680
+          description: Код перевозчика
+        url:
+          type: string
+          example: "http://www.example.com/"
+          description: Ссылка на сайт перевозчика
+        title:
+          type: string
+          example: "Россия"
+          description: Название перевозчика
+        phone:
+          type: string
+          example: ""
+          description: Контактный номер телефона перевозчика
+        logo:
+          type: string
+          format: uri-reference
+          example: "//yastatic.net/rasp/media/data/company/logo/logo_1.jpg"
+          description: URL логотипа компании
+        email:
+          type: string
+          example: ""
+          description: Электронный почтовый адрес перевозчика
     AllStationsResponse:
       type: object
       properties:

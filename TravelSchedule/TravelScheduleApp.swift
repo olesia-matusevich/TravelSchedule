@@ -1,101 +1,91 @@
 import SwiftUI
 import OpenAPIURLSession
 
-enum Destination: Hashable {
-    case citySearch(isSelectingFrom: Bool)
-    case stationSearch(city: Components.Schemas.Settlement, isSelectingFrom: Bool)
-    case carrierList(from: Components.Schemas.Station, to: Components.Schemas.Station)
-    case carrierDetail
-    case filter
-}
-
 @main
 struct TravelScheduleApp: App {
-    @StateObject private var themeManager = ThemeManager()
-    @StateObject private var viewModel = StationsViewModel(apiKey: apiKey)
     @StateObject private var navigationManager = NavigationManager()
+    @StateObject private var stationsVM: StationsViewModel
+    @StateObject private var settingsVM = SettingsViewModel()
     
-    @State private var selectedFromStation: Components.Schemas.Station? = nil
-    @State private var selectedToStation: Components.Schemas.Station? = nil
+    private let apiClient: ApiClient
     
-    private func setupAppearance() {
-        let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = .systemBackground
-        UITabBar.appearance().standardAppearance = tabBarAppearance
-        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+    init() {
+        let client = ApiClient(
+            apiKey: apiKey,
+            client: Client(
+                serverURL: try! Servers.Server1.url(),
+                transport: URLSessionTransport()
+            )
+        )
+        self.apiClient = client
+        _stationsVM = StateObject(wrappedValue: StationsViewModel(apiClient: client))
     }
     
     var body: some Scene {
         WindowGroup {
             TabView {
                 NavigationStack(path: $navigationManager.path) {
-                    MainView(
-                        selectedFromStation: $selectedFromStation,
-                        selectedToStation: $selectedToStation
-                    )
-                    .navigationDestination(for: Destination.self) { destination in
-                        switch destination {
-                        case .citySearch(let isSelectingFrom):
-                            CitySearchView(
-                                isSelectingFrom: isSelectingFrom
-                            )
-                            .environmentObject(viewModel)
-                            .environmentObject(navigationManager)
-                        case .stationSearch(let city, let isSelectingFrom):
-                            StationSearchView(
-                                selectedFromStation: $selectedFromStation,
-                                selectedToStation: $selectedToStation,
-                                selectedSettlement: city,
-                                isSelectingFrom: isSelectingFrom
-                            )
-                            .environmentObject(viewModel)
-                            .environmentObject(navigationManager)
-                        case .carrierList(let from, let to):
-                            CarrierListView(
-                                fromStation: from,
-                                toStation: to
-                            )
-                            .environmentObject(viewModel)
-                            .environmentObject(navigationManager)
-                        case .carrierDetail:
-                            TransportDetailView()
-                        case .filter:
-                            FilterView()
+                    MainView(stationsVM: stationsVM) 
+                        .environmentObject(navigationManager)
+                        .environmentObject(stationsVM)
+                        .navigationDestination(for: Destination.self) { dest in
+                            switch dest {
+                            case .citySearch(let isFrom):
+                                CitySearchView(
+                                    viewModel: CitySearchViewModel(apiClient: apiClient),
+                                    isSelectingFrom: isFrom
+                                )
+                                .environmentObject(navigationManager)
+                                .environmentObject(stationsVM)
+                                
+                            case .stationSearch(let city, let isFrom):
+                                StationSearchView(
+                                    viewModel: StationSearchViewModel(settlement: city),
+                                    isSelectingFrom: isFrom
+                                )
+                                .environmentObject(navigationManager)
+                                .environmentObject(stationsVM)
+                                
+                            case .carrierList(let from, let to):
+                                let carrierVM = CarrierListViewModel(apiClient: apiClient, from: from, to: to)
+                                CarrierListView(viewModel: carrierVM)
+                                    .environmentObject(navigationManager)
+                                    .environmentObject(carrierVM)
+                                
+                            case .carrierDetail(let code):
+                                TransportDetailView(
+                                    viewModel: TransportDetailViewModel(
+                                        carrierService: CarrierService(apiKey: apiKey, client: apiClient.rawClient),
+                                        code: code
+                                    )
+                                )
+                                .environmentObject(navigationManager)
+                                
+                            case .filter(let carrierVM):
+                                FilterView(viewModel: FilterViewModel(initialFilters: carrierVM.filters))
+                                    .environmentObject(navigationManager)
+                                    .environmentObject(carrierVM)
+                            }
                         }
-                    }
                 }
                 .tabItem {
-                    Image("schedule_tab_ic")
-                        .renderingMode(.template)
+                    Image("schedule_tab_ic").renderingMode(.template)
                 }
                 .tag(0)
+                
                 SettingsView()
+                    .environmentObject(settingsVM)
                     .tabItem {
-                        Image("settings_tab_ic")
-                            .renderingMode(.template)
+                        Image("settings_tab_ic").renderingMode(.template)
                     }
-                    .tag(1)
-                    .environmentObject(themeManager)
-                    
             }
-            .tint(.customBlack)
-            .background(.background)
-            .environmentObject(viewModel)
+            .environment(\.apiClient, apiClient)
+            .environmentObject(stationsVM)
             .environmentObject(navigationManager)
-            .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-            .onAppear {
-                setupAppearance()
-            }
-            .task {
-                await viewModel.loadCities()
-            }
+            .preferredColorScheme(settingsVM.isDarkMode ? .dark : .light)
+            .task { await stationsVM.loadCitiesIfNeeded() }
         }
     }
 }
 
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
+

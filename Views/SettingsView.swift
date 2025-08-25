@@ -2,8 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @EnvironmentObject var themeManager: ThemeManager
-    
+    @EnvironmentObject var themeManager: SettingsViewModel
     @State private var navigationPath = NavigationPath()
     
     private var imageSize: Double = 24
@@ -29,9 +28,7 @@ struct SettingsView: View {
                         Text("Пользовательское соглашение")
                             .font(.system(size: 17, weight: .regular))
                             .foregroundStyle(Color.customBlack)
-                        
                         Spacer()
-                        
                         Image("arrow")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -49,21 +46,19 @@ struct SettingsView: View {
                 
                 VStack(alignment: .center, spacing: 16) {
                     Text("Приложение использует API «Яндекс.Расписания»")
-                        .font(.system(size: 12, weight: .regular))
+                        .font(.system(size: 12))
                         .foregroundStyle(Color.customBlack)
                     Text("Версия 1.0 (beta)")
-                        .font(.system(size: 12, weight: .regular))
+                        .font(.system(size: 12))
                         .foregroundStyle(Color.customBlack)
                 }
                 .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
-                
             }
             .navigationDestination(for: SettingsDestination.self) { destination in
-                Group {
-                    switch destination {
-                    case .userAgreement:
-                        UserAgreementView(path: $navigationPath)
-                    }
+                switch destination {
+                case .userAgreement:
+                    UserAgreementView(path: $navigationPath)
+                        .environmentObject(themeManager)
                 }
             }
         }
@@ -73,5 +68,4 @@ struct SettingsView: View {
         case userAgreement
     }
 }
-
 

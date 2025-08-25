@@ -1,65 +1,71 @@
 import SwiftUI
 
 struct FilterView: View {
-    @State private var showTransferRaces: Bool = false
     @EnvironmentObject private var navigationManager: NavigationManager
+    @EnvironmentObject private var carrierListVM: CarrierListViewModel
+    @StateObject var viewModel: FilterViewModel
+    
+    let timeOrder = [
+        "Утро 06:00 - 12:00",
+        "День 12:00 - 18:00",
+        "Вечер 18:00 - 00:00",
+        "Ночь 00:00 - 06:00"
+    ]
     
     var body: some View {
         VStack {
             Text("Время отправления")
                 .bold()
-                .font(.system(size: 24))
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size:24))
+                .frame(maxWidth:.infinity, alignment:.leading)
                 .padding(.leading)
-            
-            FilterTimeItem(timeString: "Утро 06:00 - 12:00")
-            FilterTimeItem(timeString: "День 12:00 - 18:00")
-            FilterTimeItem(timeString: "Вечер 18:00 - 00:00")
-            FilterTimeItem(timeString: "Ночь 00:00 - 06:00")
+            ForEach(timeOrder, id: \.self) { key in
+                FilterTimeItem(timeString: key, isChecked: viewModel.binding(for: key))
+            }
             Text("Показывать варианты с пересадками")
                 .bold()
-                .font(.system(size: 24))
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size:24))
+                .frame(maxWidth:.infinity, alignment:.leading)
                 .padding(.leading)
-            
             HStack {
                 Text("Да")
                 Spacer()
-                RadioButton(isSelected: showTransferRaces) {
-                    showTransferRaces = true
+                RadioButton(isSelected: viewModel.showTransferRaces) {
+                    viewModel.showTransferRaces = true
                 }
             }
-            .padding([.horizontal, .top])
-            
+            .padding(.vertical)
+            .padding(.horizontal)
             HStack {
                 Text("Нет")
                 Spacer()
-                RadioButton(isSelected: !showTransferRaces) {
-                    showTransferRaces = false
+                RadioButton(isSelected: !viewModel.showTransferRaces) {
+                    viewModel.showTransferRaces = false
                 }
             }
-            .padding([.horizontal, .top])
+            .padding(.vertical)
+            .padding(.horizontal)
             Spacer()
         }
-        .toolbar(.hidden, for: .tabBar)
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                HStack(spacing: 0) {
-                    Button(action: {
-                        navigationManager.path.removeLast()
-                    }) {
+                Button(action: {
+                    navigationManager.path.removeLast()
+                }) {
+                    HStack(spacing: 0) {
                         Image(systemName: "chevron.backward")
-                            .foregroundColor(.customBlack)
                     }
-                    Spacer()
                 }
+                .foregroundColor(.customBlack)
             }
         }
         .navigationBarBackButtonHidden(true)
         .overlay{
             Button(action: {
-                // TODO: добавить действие кнопки применить
+                carrierListVM.filters.ranges = viewModel.ranges
+                carrierListVM.filters.showTransferRaces = viewModel.showTransferRaces ? true : false
+                
+                navigationManager.path.removeLast()
             }) {
                 Text("Применить")
                     .font(.system(size: 17))
@@ -78,21 +84,17 @@ struct FilterView: View {
 
 struct FilterTimeItem: View {
     let timeString: String
-    @State private var isChecked: Bool = false
+    @Binding var isChecked: Bool
+    
     var body: some View {
         HStack {
             Text(timeString)
             Spacer()
-            Toggle("Включить опцию", isOn: $isChecked)
+            Toggle("", isOn: $isChecked)
                 .toggleStyle(CheckboxToggleStyle())
         }
         .padding(.vertical)
         .padding(.horizontal)
     }
 }
-
-#Preview {
-    FilterView()
-}
-
 

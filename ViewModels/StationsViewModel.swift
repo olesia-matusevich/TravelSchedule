@@ -1,49 +1,51 @@
-import SwiftUI
-import OpenAPIURLSession
-import OpenAPIRuntime
-import Combine
+import Foundation
 
-class StationsViewModel: ObservableObject {
+@MainActor
+final class StationsViewModel: ObservableObject {
     @Published var allCities: [Components.Schemas.Settlement] = []
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
-    @Published var errorType: ErrorViewType?
+    @Published var errorType: ErrorViewType? = nil
     
-    private let stationsService: StationsListService
+    @Published var selectedFromStation: Components.Schemas.Station?
+    @Published var selectedToStation: Components.Schemas.Station?
     
-    init(apiKey: String) {
-        self.stationsService = StationsListService(
-            apiKey: apiKey,
-            client: Client(
-                serverURL: try! Servers.Server1.url(),
-                transport: URLSessionTransport()
-            )
-        )
+    private let apiClient: ApiClient
+    
+    init(apiClient: ApiClient) {
+        self.apiClient = apiClient
     }
     
-    func loadCities()  {
-        guard !isLoading else { return }
+    func selectStation(_ station: Components.Schemas.Station, isFrom: Bool) {
+        if isFrom {
+            selectedFromStation = station
+        } else {
+            selectedToStation = station
+        }
+    }
+    
+    func swapStations() {
+           let from = selectedFromStation
+           selectedFromStation = selectedToStation
+           selectedToStation = from
+       }
+    
+    func loadCitiesIfNeeded() async {
+        guard !isLoading, allCities.isEmpty else { return }
+        await loadCities()
+    }
+    
+    func loadCities() async {
         isLoading = true
         defer { isLoading = false }
-        
-        Task {
-            do {
-                let allCities = try await stationsService.getFilteredCities()
-                
-                let filteredCities = allCities.filter { settlement in
-                    guard let stations = settlement.stations else { return false }
-                    return stations.contains { $0.transport_type == "train" }
-                }
-                await MainActor.run {
-                    self.allCities = filteredCities
-                    self.isLoading = false
-                    errorType = nil
-                }
-            } catch let error as ErrorViewType {
-                errorType = error
-            } catch {
-                errorType = .serverError
-            }
-       }
+        do {
+            let cities = try await apiClient.getFilteredCities()
+            allCities = cities
+            errorType = nil
+        } catch let e as ErrorViewType {
+            errorType = e
+        } catch {
+            errorType = .serverError
+        }
     }
 }
+

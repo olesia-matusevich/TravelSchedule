@@ -12,15 +12,12 @@ struct UserAgreementView: View {
     
     var body: some View {
         ZStack {
-            Color.customWhite
-                .ignoresSafeArea()
+            Color.customWhite.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 if isLoading {
                     ProgressView(value: progress, total: 1.0)
                         .progressViewStyle(.linear)
-                        .progressViewStyle(LinearProgressViewStyle())
-                        .accentColor(.black)
                         .scaleEffect(x: 1, y: 0.75, anchor: .trailing)
                 }
                 WebView(
@@ -31,16 +28,11 @@ struct UserAgreementView: View {
             }
             .navigationTitle("Пользовательское соглашение")
             .navigationBarTitleDisplayMode(.inline)
-           
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        path.removeLast()
-                    }) {
-                        HStack(spacing: 0) {
-                            Image(systemName: "chevron.backward")
-                        }
+                    Button { path.removeLast() } label: {
+                        Image(systemName: "chevron.backward")
                     }
                     .foregroundColor(.customBlack)
                 }
@@ -50,7 +42,3 @@ struct UserAgreementView: View {
     }
 }
 
-
-#Preview {
-    //    UserAgreementView()
-}

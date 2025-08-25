@@ -1,13 +1,12 @@
 import SwiftUI
 
-enum ErrorViewType: String, Error {
+enum ErrorViewType: String, Sendable, Error {
     case serverError
     case networkError
     
     var image: Image {
         Image(self.rawValue)
     }
-    
     var title: String {
         switch self {
         case .networkError: return "Нет интернета"
@@ -41,7 +40,3 @@ struct ErrorView: View {
     }
 }
 
-//#Preview {
-////    ErrorView(errorType: .serverError)
-////    ErrorView(errorType: .networkError)
-//}
