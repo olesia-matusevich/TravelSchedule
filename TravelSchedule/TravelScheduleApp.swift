@@ -47,10 +47,10 @@ struct TravelScheduleApp: App {
                                 .environmentObject(stationsVM)
                                 
                             case .carrierList(let from, let to):
-                                CarrierListView(
-                                    viewModel: CarrierListViewModel(apiClient: apiClient, from: from, to: to)
-                                )
-                                .environmentObject(navigationManager)
+                                let carrierVM = CarrierListViewModel(apiClient: apiClient, from: from, to: to)
+                                CarrierListView(viewModel: carrierVM)
+                                    .environmentObject(navigationManager)
+                                    .environmentObject(carrierVM)
                                 
                             case .carrierDetail(let code):
                                 TransportDetailView(
@@ -61,9 +61,10 @@ struct TravelScheduleApp: App {
                                 )
                                 .environmentObject(navigationManager)
                                 
-                            case .filter:
-                                FilterView(viewModel: FilterViewModel())
+                            case .filter(let carrierVM):
+                                FilterView(viewModel: FilterViewModel(initialFilters: carrierVM.filters))
                                     .environmentObject(navigationManager)
+                                    .environmentObject(carrierVM)
                             }
                         }
                 }

@@ -2,7 +2,15 @@ import SwiftUI
 
 struct FilterView: View {
     @EnvironmentObject private var navigationManager: NavigationManager
+    @EnvironmentObject private var carrierListVM: CarrierListViewModel
     @StateObject var viewModel: FilterViewModel
+    
+    let timeOrder = [
+        "Утро 06:00 - 12:00",
+        "День 12:00 - 18:00",
+        "Вечер 18:00 - 00:00",
+        "Ночь 00:00 - 06:00"
+    ]
     
     var body: some View {
         VStack {
@@ -11,10 +19,8 @@ struct FilterView: View {
                 .font(.system(size:24))
                 .frame(maxWidth:.infinity, alignment:.leading)
                 .padding(.leading)
-            ForEach(Array(viewModel.ranges.keys), id: \.self) { key in
-                HStack {
-                    FilterTimeItem(timeString: key)
-                }
+            ForEach(timeOrder, id: \.self) { key in
+                FilterTimeItem(timeString: key, isChecked: viewModel.binding(for: key))
             }
             Text("Показывать варианты с пересадками")
                 .bold()
@@ -56,6 +62,9 @@ struct FilterView: View {
         .navigationBarBackButtonHidden(true)
         .overlay{
             Button(action: {
+                carrierListVM.filters.ranges = viewModel.ranges
+                carrierListVM.filters.showTransferRaces = viewModel.showTransferRaces ? true : false
+                
                 navigationManager.path.removeLast()
             }) {
                 Text("Применить")
@@ -75,15 +84,17 @@ struct FilterView: View {
 
 struct FilterTimeItem: View {
     let timeString: String
-    @State private var isChecked: Bool = false
+    @Binding var isChecked: Bool
+    
     var body: some View {
         HStack {
             Text(timeString)
             Spacer()
-            Toggle("Включить опцию", isOn: $isChecked)
+            Toggle("", isOn: $isChecked)
                 .toggleStyle(CheckboxToggleStyle())
         }
         .padding(.vertical)
         .padding(.horizontal)
     }
 }
+

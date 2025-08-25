@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 final class FilterViewModel: ObservableObject {
@@ -10,6 +11,22 @@ final class FilterViewModel: ObservableObject {
         "Ночь 00:00 - 06:00": false
     ]
     @Published var showTransferRaces: Bool = false
+    
+    init(initialFilters: Filters = Filters()) {
+        self.ranges = initialFilters.ranges
+        self.showTransferRaces = initialFilters.showTransferRaces ?? false
+    }
+    
+    func binding(for key: String) -> Binding<Bool> {
+        Binding(
+            get: { self.ranges[key, default: false] },
+            set: { self.ranges[key] = $0 }
+        )
+    }
+    
+    var filters: Filters {
+        Filters(ranges: ranges, showTransferRaces: showTransferRaces)
+    }
     
     func toggleRange(_ key: String) {
         ranges[key]?.toggle()

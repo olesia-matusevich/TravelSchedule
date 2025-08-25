@@ -15,11 +15,10 @@ struct CarrierListView: View {
                     .bold()
                     .padding(.leading, 16)
                     .padding(.trailing, 16)
-                List(viewModel.items, id: \.self) { service in
+                List(viewModel.filteredItems, id: \.self) { service in
                     Button {
                         navigationManager.path.append(Destination.carrierDetail(code: service.carrierCode))
-                    }
-                    label: {
+                    } label: {
                         CarrierRow(serviceInfo: service)
                     }
                     .listRowInsets(.init(top: 0, leading: 16, bottom: 8, trailing: 16))
@@ -43,7 +42,7 @@ struct CarrierListView: View {
         .navigationBarBackButtonHidden(true)
         .overlay {
             if !viewModel.isLoading {
-                if viewModel.items.isEmpty && viewModel.errorMessage == nil {
+                if viewModel.filteredItems.isEmpty && viewModel.errorMessage == nil {
                     Text("Вариантов нет")
                         .font(.system(size: 24))
                         .fontWeight(.bold)
@@ -58,7 +57,7 @@ struct CarrierListView: View {
         }
         .overlay {
             Button {
-                navigationManager.path.append(Destination.filter)
+                navigationManager.path.append(Destination.filter(carrierVM: viewModel))
             }
             label: {
                 Text("Уточнить время")
